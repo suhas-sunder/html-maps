@@ -280,12 +280,11 @@ export default function Home() {
           >
             <Image
               src={logoImg}
-              alt=""
+              alt="logo image for HTMLMaps.com, a blue location pin with a white center and a small dot in the middle"
               width={42}
               height={42}
-              className="object-contain mr-2"
+              className="object-fit mr-2"
               aria-hidden="true"
-              priority
             />
             <span className="text-slate-500 transition-colors">HTML</span>
             <span className="text-sky-600 transition-colors">Maps</span>
