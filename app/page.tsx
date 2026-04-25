@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import logoImg from "./assets/images/logo.png";
 
 const siteUrl = "https://www.htmlmaps.com";
 
@@ -278,7 +279,7 @@ export default function Home() {
             aria-label="HTMLMaps home"
           >
             <Image
-              src="/logo.png"
+              src={logoImg}
               alt=""
               width={42}
               height={42}
@@ -286,12 +287,8 @@ export default function Home() {
               aria-hidden="true"
               priority
             />
-            <span className="text-slate-500 transition-colors">
-              HTML
-            </span>
-            <span className="text-sky-600 transition-colors">
-              Maps
-            </span>
+            <span className="text-slate-500 transition-colors">HTML</span>
+            <span className="text-sky-600 transition-colors">Maps</span>
             <span className="text-sky-300 transition-colors group-hover:text-sky-500">
               .com
             </span>
