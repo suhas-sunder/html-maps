@@ -2,46 +2,56 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import logoImg from "./assets/images/logo.png";
+import InterestForm from "./components/InterestForm";
 
 const siteUrl = "https://www.htmlmaps.com";
 
 export const metadata: Metadata = {
-  title: "HTMLMaps | Clickable HTML Maps, Floor Plans, and Visual Layouts",
+  title:
+    "HTMLMaps | Interactive Site Plans, Event Maps, Floor Plans, and Visual Embeds",
   description:
-    "Create clickable HTML maps, SVG maps, floor plans, image hotspots, seating charts, venue layouts, campus maps, and interactive diagrams for websites.",
+    "Request early access to HTMLMaps, a planned tool for turning site plans, event maps, floor plans, product diagrams, SVG maps, and business visuals into interactive website embeds and reusable export assets.",
   keywords: [
-    "HTML maps",
-    "interactive map generator",
+    "interactive site plan builder",
+    "interactive floor plan builder",
+    "event map builder",
+    "venue map builder",
+    "image hotspot generator",
     "clickable map generator",
     "SVG map generator",
-    "clickable SVG map",
-    "clickable floor plan",
-    "image hotspot generator",
-    "interactive floor plan",
-    "venue map builder",
-    "campus map builder",
-    "sales territory map",
     "website map embed",
-    "interactive diagram builder",
-    "product diagram builder",
-    "real estate site plan",
+    "interactive visual embed",
+    "real estate site plan map",
+    "event floor plan software",
+    "product diagram hotspot",
+    "interactive timeline widget",
+    "HTML maps",
+    "interactive business visuals",
+    "visual embed builder",
+    "clickable floor plan",
+    "interactive product diagram",
+    "website visual widget",
+    "interactive site map",
+    "floor plan hotspot tool",
+    "clickable event map",
+    "interactive venue map",
   ],
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "HTMLMaps | Clickable Maps and Visual Layouts for Websites",
+    title: "HTMLMaps | Interactive Website Visuals and Reusable Export Assets",
     description:
-      "Build clickable HTML/SVG maps, floor plans, site plans, venue maps, image hotspots, seating charts, and interactive visual embeds for websites.",
+      "Turn site plans, event maps, floor plans, diagrams, image hotspots, and SVG maps into interactive website embeds and reusable business assets.",
     url: siteUrl,
     siteName: "HTMLMaps",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "HTMLMaps | Clickable Maps and Visual Layouts for Websites",
+    title: "HTMLMaps | Interactive Website Visuals and Reusable Export Assets",
     description:
-      "Create clickable maps, floor plans, image hotspots, and interactive visual layouts for websites.",
+      "Clickable site plans, event maps, floor plans, diagrams, image hotspots, SVG maps, and export-ready business visuals.",
   },
   robots: {
     index: true,
@@ -49,168 +59,213 @@ export const metadata: Metadata = {
   },
 };
 
-const useCases = [
+const heroBenefits = [
+  "Clickable website embeds",
+  "Image and PDF export packs",
+  "Social, ad, and video-ready assets",
+];
+
+const visualTypes = [
+  "Site plans",
+  "Event maps",
+  "Floor plans",
+  "Product diagrams",
+  "SVG maps",
+  "Venue layouts",
+];
+
+const painPoints = [
   {
-    title: "Clickable SVG maps",
-    text: "Create region-based maps where states, provinces, countries, districts, or custom areas can have their own colors, links, labels, and tooltip text.",
+    title: "Flat images make visitors work too hard",
+    text: "A static image can show a layout, but it cannot help someone click a unit, inspect a booth, view a room detail, compare sections, or move straight to a booking, inquiry, listing, or sales page.",
   },
   {
-    title: "Interactive floor plans",
-    text: "Turn a building layout, venue plan, apartment floor plan, or site plan into a clickable website embed with clear labels and helpful details.",
+    title: "One visual gets rebuilt too many times",
+    text: "The same map, plan, or diagram often has to be remade for the website, proposal, PDF, email, social post, ad, and presentation. That wastes time and creates inconsistent versions.",
   },
   {
-    title: "Venue and event maps",
-    text: "Help visitors understand booths, rooms, entrances, stages, seating areas, sponsor zones, parking areas, or event sections from one visual layout.",
-  },
-  {
-    title: "Campus and building maps",
-    text: "Show departments, classrooms, offices, labs, facilities, entrances, and service areas in a simple map-style interface that works on a website.",
-  },
-  {
-    title: "Sales territory maps",
-    text: "Create visual sales coverage maps for regions, reps, service zones, franchise areas, or business territories without building a custom map app.",
-  },
-  {
-    title: "Product and diagram hotspots",
-    text: "Use hotspots to explain product parts, technical diagrams, infographics, process visuals, equipment layouts, or any image that needs clickable areas.",
+    title: "Existing tools usually solve only one piece",
+    text: "Design platforms are good at graphics. Hotspot tools are good at clickable areas. Animation tools are good at motion. HTMLMaps is being shaped around the full business workflow.",
   },
 ];
 
-const plannedTools = [
+const coreUseCases = [
   {
-    title: "Interactive Map Generator",
-    text: "Build clickable maps for websites with regions, labels, hover states, tooltips, and links.",
+    title: "Property site plans",
+    text: "Turn site plans into clickable sales and leasing tools with units, lots, buildings, amenities, entrances, parking, availability states, and links to next steps.",
+    examples: ["Apartment communities", "Builders", "Commercial leasing"],
   },
   {
-    title: "Clickable SVG Map Generator",
-    text: "Customize SVG maps for countries, states, provinces, territories, and other region-based visuals.",
+    title: "Event and venue maps",
+    text: "Make booth maps, sponsor zones, room layouts, seating sections, stages, entrances, vendor areas, and attendee paths easier to explore online.",
+    examples: ["Trade shows", "Conferences", "Venues"],
   },
   {
-    title: "Image Hotspot Generator",
-    text: "Upload an image and place clickable hotspots on diagrams, graphics, product images, or layouts.",
+    title: "Floor plans and facility maps",
+    text: "Help visitors understand rooms, departments, office areas, classroom layouts, clinic areas, service counters, and campus buildings without a custom app.",
+    examples: ["Schools", "Offices", "Clinics"],
   },
   {
-    title: "Floor Plan Builder",
-    text: "Create clickable room, unit, office, booth, or building layouts from floor plans and site plans.",
-  },
-  {
-    title: "Venue Map Builder",
-    text: "Turn event spaces, halls, booths, sections, stages, and entrances into a website-ready visual map.",
-  },
-  {
-    title: "Campus Map Builder",
-    text: "Create simple interactive maps for schools, colleges, hospitals, offices, and multi-building locations.",
-  },
-  {
-    title: "Sales Territory Map Builder",
-    text: "Show service areas, sales regions, franchise zones, branch coverage, or rep ownership by territory.",
-  },
-  {
-    title: "Product Diagram Builder",
-    text: "Make product diagrams clickable so visitors can explore parts, features, specifications, or instructions.",
+    title: "Product diagrams and explainers",
+    text: "Add clickable product parts, feature callouts, process steps, equipment notes, comparison points, and explainer sections to visuals people already use.",
+    examples: ["Product pages", "B2B marketing", "Support content"],
   },
 ];
 
-const audiences = [
+const workflowSteps = [
   {
-    title: "Agencies and freelancers",
-    text: "Create client-ready clickable maps, floor plans, diagrams, and website embeds without custom development for every project.",
+    title: "Start with one important visual",
+    text: "Use a site plan, floor plan, event layout, product diagram, SVG map, or other visual your business already depends on.",
   },
   {
-    title: "Venues and event organizers",
-    text: "Show booths, rooms, stages, entrances, seating areas, sponsor zones, parking areas, and visitor paths in one interactive layout.",
+    title: "Make the right areas interactive",
+    text: "Add clickable regions, labels, tooltips, links, simple states, and callouts so visitors can explore the visual instead of guessing what matters.",
   },
   {
-    title: "Real estate teams",
-    text: "Publish clickable site plans, buildings, units, lots, amenities, and property layouts for buyers, renters, or internal teams.",
+    title: "Put it on your website",
+    text: "Use the interactive version as a website embed so the visual can support inquiries, bookings, leasing, navigation, product education, or client decisions.",
   },
   {
-    title: "Schools and campuses",
-    text: "Help students, visitors, parents, staff, and guests find departments, buildings, classrooms, entrances, and services.",
-  },
-  {
-    title: "Small businesses",
-    text: "Display service areas, branch locations, territories, product diagrams, office layouts, or location-based information.",
-  },
-  {
-    title: "Developers",
-    text: "Use hosted embeds and clean HTML/SVG output instead of building custom map interactions from scratch.",
+    title: "Reuse the same asset elsewhere",
+    text: "Create matching assets for PDFs, proposals, listings, email, social posts, ad sizes, presentations, and short motion content from the same source visual.",
   },
 ];
 
-const differences = [
+const differentiators = [
   {
-    title: "Clickable visuals",
-    text: "Focused on clickable maps, layouts, floor plans, diagrams, and image hotspots.",
+    title: "Different from design platforms",
+    text: "If you only need a static graphic, a design tool is enough. HTMLMaps is for visuals that need to function on a website and stay useful across sales and marketing channels.",
   },
+  {
+    title: "Different from basic hotspot tools",
+    text: "A hotspot tool can make an image clickable. HTMLMaps is being built around a bigger job: publish the visual, reuse it, export it, and keep the business asset consistent.",
+  },
+  {
+    title: "Different from GIS software",
+    text: "This is not meant for roads, routing, satellite layers, or geographic analysis. It is for visual layouts, areas, sections, rooms, booths, units, diagrams, and business context.",
+  },
+  {
+    title: "Different from custom development",
+    text: "Custom code can solve anything, but many teams do not need a full build for every clickable map, site plan, venue layout, or diagram they want to publish.",
+  },
+];
+
+const outputCards = [
   {
     title: "Website embeds",
-    text: "Designed around simple hosted embeds that can be placed into common website platforms.",
+    text: "Put a clickable version of your visual on your website so visitors can explore areas, read details, follow links, and move to the next step.",
   },
   {
-    title: "No GIS required",
-    text: "Useful when you need clickable regions and labels, not advanced geographic mapping software.",
+    title: "Image exports",
+    text: "Create PNG or JPG versions for listings, emails, thumbnails, client sharing, social graphics, and simple promotional use.",
   },
   {
-    title: "No custom JavaScript",
-    text: "Built for users who want the result without hand-coding tooltips, links, regions, and hover states.",
+    title: "PDF exports",
+    text: "Generate clean PDF versions for brochures, attendee guides, sales handouts, sponsor decks, proposal packets, and printable materials.",
+  },
+  {
+    title: "Custom sizes",
+    text: "Resize the same visual for website sections, presentation slides, listing images, social posts, display placements, and ad formats.",
+  },
+  {
+    title: "Animated assets",
+    text: "Create short motion assets for walkthroughs, promos, explainers, social posts, and visual storytelling without rebuilding the concept from scratch.",
+  },
+  {
+    title: "Client and team workflow",
+    text: "Keep repeat work organized with review links, reusable versions, brand presets, workspace tools, and white-label options as the product grows.",
   },
 ];
 
-const platforms = [
-  "WordPress",
-  "Shopify",
-  "Squarespace",
-  "Wix",
-  "Webflow",
-  "Weebly",
-  "Drupal",
-  "Joomla",
-  "Custom HTML",
+const audienceCards = [
+  {
+    title: "Real estate and property teams",
+    text: "Use interactive site plans, property maps, unit maps, amenity layouts, and export assets to support leasing, listings, and buyer or renter decisions.",
+  },
+  {
+    title: "Events, venues, and expos",
+    text: "Use one event map across a website, attendee guide, sponsor deck, signage export, booth sales flow, and promo material.",
+  },
+  {
+    title: "Schools, campuses, and facilities",
+    text: "Turn buildings, departments, rooms, visitor areas, and service locations into clickable guides for students, staff, guests, and customers.",
+  },
+  {
+    title: "Agencies, freelancers, and website owners",
+    text: "Create client-ready interactive visual sections without rebuilding the same map, diagram, or layout manually for every channel.",
+  },
 ];
 
-const faq = [
+const pricingSignals = [
   {
-    question: "What is an HTML map?",
-    answer:
-      "An HTML map is a website-friendly interactive visual that can be embedded into a page. In the context of HTMLMaps, it means a clickable map, floor plan, diagram, or image hotspot layout built with web technologies such as HTML, SVG, CSS, and JavaScript.",
+    name: "Free branded test",
+    price: "$0",
+    text: "Try a limited branded version when the first version is available.",
   },
   {
-    question: "Is this only for geography maps?",
-    answer:
-      "No. Geography maps are one use case, but the same idea works for floor plans, seating charts, venue layouts, real estate site plans, campus maps, sales territories, event maps, and product diagrams.",
+    name: "Single project unlock",
+    price: "$19-$49",
+    text: "Remove branding and unlock basic exports for one visual project.",
   },
   {
-    question: "How would the embed work?",
-    answer:
-      "HTMLMaps is designed around hosted iframe embeds. A user creates a clickable visual, publishes it, and copies a small iframe snippet into their website. This keeps the embed simple and compatible with most platforms that allow custom HTML.",
+    name: "Pro",
+    price: "$29/month",
+    text: "Create multiple projects with hosted embeds, custom sizing, and stronger export options.",
   },
   {
-    question:
-      "Would this work with WordPress, Shopify, Wix, Squarespace, and Webflow?",
+    name: "Business / agency",
+    price: "$79+/month",
+    text: "Use workspaces, client review, brand presets, advanced exports, white-label options, and repeat-use features.",
+  },
+];
+
+const fitQuestions = [
+  "You already have a site plan, event map, floor plan, SVG map, or diagram that matters to your business.",
+  "The visual would be more useful if visitors could click areas, read details, open links, or move to a next step.",
+  "You need the same visual on a website, in a PDF, in a proposal, in social posts, in ads, or in short video assets.",
+  "You would pay to avoid rebuilding the same visual across multiple tools or asking a developer to recreate it each time.",
+];
+
+const faqs = [
+  {
+    question: "Is HTMLMaps available today?",
     answer:
-      "The goal is to support common website platforms through standard iframe or custom HTML embed blocks. Platform-specific plugins or apps are not required for a basic embed-first version.",
+      "HTMLMaps is not fully launched yet. This page is for early access requests and product validation. The goal is to identify the most valuable first use cases before building the full editor.",
   },
   {
-    question: "Why not just use a normal map service?",
+    question: "Why should I contact HTMLMaps if other tools already exist?",
     answer:
-      "Traditional map services are usually focused on geographic locations, pins, directions, and map tiles. HTMLMaps is aimed at clickable visual layouts, including region maps, floor plans, site plans, diagrams, and custom visuals where the user controls the areas, links, labels, and tooltips.",
+      "Existing tools usually solve one slice of the job. Design platforms create visuals, hotspot tools add clickable points, and export tools create separate files. HTMLMaps is being built around the full workflow: one source visual that can become an interactive website embed and reusable business asset.",
   },
   {
-    question: "Who is HTMLMaps for?",
+    question: "What makes this different from a general design platform?",
     answer:
-      "HTMLMaps is for small businesses, agencies, freelancers, schools, venues, real estate teams, event organizers, bloggers, and developers who need a simple clickable visual embed without building custom code from scratch.",
+      "General design platforms are strong for static graphics, social posts, and simple videos. HTMLMaps is aimed at business visuals that need clickable areas, website embeds, reusable exports, and a workflow built around maps, plans, layouts, and diagrams.",
   },
   {
-    question: "Can users upload their own floor plans or diagrams?",
+    question: "What makes this different from a basic image hotspot tool?",
     answer:
-      "The planned workflow is to let users start with built-in map templates or upload their own image-based visuals, such as floor plans, venue layouts, site plans, campus maps, event maps, and product diagrams. Uploaded SVG support can come later because SVG uploads require stronger security controls.",
+      "A basic hotspot tool can make an image clickable. HTMLMaps is focused on the larger business need: turning a practical visual into something that works on the website and can also support PDFs, proposals, ads, social posts, client materials, and simple motion assets.",
   },
   {
-    question:
-      "What makes HTMLMaps different from a general website widget tool?",
+    question: "Will I be charged after submitting the form?",
     answer:
-      "HTMLMaps is focused on clickable visual layouts, not generic widgets. The goal is to solve a specific website problem: turning maps, plans, diagrams, and images into interactive embeds with clickable areas, tooltips, labels, and links.",
+      "No. The form does not collect payment information. It only asks whether the possible pricing would make sense for your use case.",
+  },
+  {
+    question: "Why show pricing before launch?",
+    answer:
+      "Pricing is shown because interest after seeing a realistic price is more useful than a generic waitlist signup. If the product would only be useful for free, that is important to know before building it.",
+  },
+  {
+    question: "Can I upload my floor plan, site plan, or event map here?",
+    answer:
+      "No. This page does not accept file uploads. The form only collects written details about your use case, business type, needed outputs, and email address.",
+  },
+  {
+    question: "Can I include links in the form?",
+    answer:
+      "No. Links are blocked to reduce spam and security risk. Please describe your use case without pasting URLs.",
   },
 ];
 
@@ -223,19 +278,19 @@ const jsonLd = {
       name: "HTMLMaps",
       url: siteUrl,
       description:
-        "Clickable HTML maps, SVG maps, floor plans, image hotspots, seating charts, venue layouts, campus maps, and interactive diagrams for websites.",
+        "HTMLMaps is a planned tool for turning business visuals into interactive website embeds and reusable export assets.",
       inLanguage: "en",
     },
     {
       "@type": "WebPage",
       "@id": `${siteUrl}/#webpage`,
       url: siteUrl,
-      name: "HTMLMaps | Clickable HTML Maps, Floor Plans, and Visual Layouts",
+      name: "HTMLMaps | Interactive Site Plans, Event Maps, Floor Plans, and Visual Embeds",
       isPartOf: {
         "@id": `${siteUrl}/#website`,
       },
       description:
-        "Create clickable HTML maps, SVG maps, floor plans, image hotspots, seating charts, venue layouts, campus maps, and interactive diagrams for websites.",
+        "Request early access to HTMLMaps, a planned tool for making site plans, event maps, floor plans, diagrams, and business visuals clickable, embeddable, and reusable.",
       inLanguage: "en",
     },
     {
@@ -246,12 +301,18 @@ const jsonLd = {
       operatingSystem: "Web",
       url: siteUrl,
       description:
-        "A web-based builder for clickable maps, floor plans, image hotspots, seating charts, venue layouts, and interactive diagrams.",
+        "A planned web-based builder for clickable site plans, event maps, floor plans, image hotspots, visual embeds, and export-ready business visuals.",
+      offers: {
+        "@type": "AggregateOffer",
+        lowPrice: "0",
+        highPrice: "79",
+        priceCurrency: "USD",
+      },
     },
     {
       "@type": "FAQPage",
       "@id": `${siteUrl}/#faq`,
-      mainEntity: faq.map((item) => ({
+      mainEntity: faqs.map((item) => ({
         "@type": "Question",
         name: item.question,
         acceptedAnswer: {
@@ -283,8 +344,9 @@ export default function Home() {
               alt="logo image for HTMLMaps.com, a blue location pin with a white center and a small dot in the middle"
               width={42}
               height={42}
-              className="object-fit mr-2"
+              className="mr-2 object-contain"
               aria-hidden="true"
+              priority
             />
             <span className="text-slate-500 transition-colors">HTML</span>
             <span className="text-sky-600 transition-colors">Maps</span>
@@ -294,256 +356,163 @@ export default function Home() {
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
-            <Link className="cursor-pointer hover:text-sky-700" href="#tools">
-              Tools
+            <Link
+              className="cursor-pointer transition hover:text-sky-700"
+              href="#pain"
+            >
+              Pain points
             </Link>
             <Link
-              className="cursor-pointer hover:text-sky-700"
+              className="cursor-pointer transition hover:text-sky-700"
               href="#use-cases"
             >
               Use cases
             </Link>
             <Link
-              className="cursor-pointer hover:text-sky-700"
-              href="#how-it-works"
+              className="cursor-pointer transition hover:text-sky-700"
+              href="#different"
             >
-              How it works
+              Why different
             </Link>
             <Link
-              className="cursor-pointer hover:text-sky-700"
-              href="#compatibility"
+              className="cursor-pointer transition hover:text-sky-700"
+              href="#pricing"
             >
-              Compatibility
+              Pricing
             </Link>
-            <Link className="cursor-pointer hover:text-sky-700" href="#faq">
-              FAQ
+            <Link
+              className="cursor-pointer transition hover:text-sky-700"
+              href="#interest"
+            >
+              Early access
             </Link>
           </nav>
         </div>
       </section>
 
       <section id="top" className="bg-white">
-        <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 pb-20 pt-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-24">
+        <div className="mx-auto grid w-full max-w-7xl gap-10 px-6 pb-16 pt-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:pb-20">
           <div>
             <p className="mb-4 inline-flex rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
-              Clickable maps, floor plans, and visual website embeds
+              Early access for interactive business visuals
             </p>
+
             <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-sky-700 sm:text-5xl lg:text-6xl">
-              Create clickable maps and floor plans for any website.
+              Turn one important visual into a website embed, export pack, and
+              marketing asset.
             </h1>
+
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700">
-              Build interactive HTML maps, SVG maps, image hotspots, venue
-              layouts, seating charts, campus maps, and real estate site plans
-              without writing custom code. Add clickable areas, tooltips, links,
-              colors, and labels, then publish a responsive embed for your
-              website.
+              HTMLMaps is being built for businesses that rely on site plans,
+              event maps, floor plans, product diagrams, SVG maps, and other
+              visual layouts. Make the visual clickable on your website, then
+              reuse the same source across PDFs, proposals, social posts, ads,
+              and short animated assets.
             </p>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-700">
-              HTMLMaps is designed for website owners, agencies, schools,
-              venues, real estate teams, event organizers, and developers who
-              need a clean clickable visual embed without GIS software,
-              WordPress-only plugins, or a bloated design platform.
+
+            <div className="mt-6 grid gap-3 text-sm font-semibold text-slate-800 sm:grid-cols-3">
+              {heroBenefits.map((point) => (
+                <div
+                  key={point}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                >
+                  {point}
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600">
+              The full editor is not live yet. If this would solve a real
+              business problem, review the possible pricing and tell us what you
+              need.
             </p>
+
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
-                href="#concept-demo"
+                href="#pricing"
                 className="flex cursor-pointer items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-sky-800"
               >
-                See how it works
+                Check possible pricing
               </Link>
               <Link
-                href="#tools"
+                href="#interest"
                 className="flex cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-900 transition hover:border-sky-300 hover:bg-sky-50"
               >
-                View planned tools
+                Request early access
               </Link>
             </div>
           </div>
 
-          <div
-            id="concept-demo"
-            className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-xl"
-          >
-            <div className="rounded-2xl bg-white p-5 shadow-sm">
-              <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
-                <div>
-                  <h2 className="text-lg font-bold text-sky-700">
-                    Clickable layout preview
-                  </h2>
-                  <p className="text-sm text-slate-600">
-                    Add links, labels, and tooltips to any map or visual layout
-                  </p>
-                </div>
-                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                  Website-ready
-                </span>
+          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-xl">
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+              <p className="mb-4 inline-flex rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
+                Built for practical visual assets
+              </p>
+
+              <h2 className="text-2xl font-bold tracking-tight text-sky-700">
+                If your visual helps people decide, book, lease, buy, attend, or
+                understand, it should do more than sit there.
+              </h2>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {visualTypes.map((visual) => (
+                  <span
+                    key={visual}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700"
+                  >
+                    {visual}
+                  </span>
+                ))}
               </div>
 
-              <div className="grid gap-4 md:grid-cols-[0.75fr_1.25fr]">
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="mb-3 text-sm font-semibold text-slate-900">
-                    Selected area
-                  </p>
-                  <div className="space-y-3 text-sm">
-                    <div>
-                      <label className="mb-1 block font-medium text-slate-700">
-                        Label
-                      </label>
-                      <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-600">
-                        North Wing
+              <div className="mt-6 space-y-4">
+                {workflowSteps.map((step, index) => (
+                  <article
+                    key={step.title}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                  >
+                    <div className="flex gap-4">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-bold text-white">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-sky-700">
+                          {step.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-7 text-slate-700">
+                          {step.text}
+                        </p>
                       </div>
                     </div>
-                    <div>
-                      <label className="mb-1 block font-medium text-slate-700">
-                        Tooltip
-                      </label>
-                      <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-600">
-                        Meeting rooms, check-in desk, and visitor information.
-                      </div>
-                    </div>
-                    <div>
-                      <label className="mb-1 block font-medium text-slate-700">
-                        Link
-                      </label>
-                      <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-600">
-                        /north-wing
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                  <div className="grid h-72 grid-cols-3 gap-3">
-                    <div className="col-span-2 rounded-2xl border-2 border-sky-300 bg-sky-50 p-4">
-                      <p className="font-semibold text-sky-800">North Wing</p>
-                      <p className="mt-2 text-sm text-sky-700">
-                        Clickable area with tooltip and link
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-slate-100 p-4">
-                      <p className="font-semibold text-slate-700">Lobby</p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-slate-100 p-4">
-                      <p className="font-semibold text-slate-700">Room A</p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-slate-100 p-4">
-                      <p className="font-semibold text-slate-700">Room B</p>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-slate-100 p-4">
-                      <p className="font-semibold text-slate-700">Exit</p>
-                    </div>
-                  </div>
-                </div>
+                  </article>
+                ))}
               </div>
 
-              <div className="mt-4 rounded-xl bg-slate-950 p-4 text-sm text-slate-100">
-                <code>{`<iframe src="https://htmlmaps.com/embed/your-map" width="100%" height="500" loading="lazy"></iframe>`}</code>
-              </div>
+              <p className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-900">
+                Early access request only. No payment or file upload is
+                collected on this page.
+              </p>
             </div>
           </div>
         </div>
       </section>
-      <section
-        id="problem"
-        className="relative overflow-hidden border-y border-slate-200 bg-slate-50"
-      >
-        <div
-          className="pointer-events-none absolute -right-24 bottom-0 hidden h-80 w-80 rounded-full border-[28px] border-sky-100 opacity-70 lg:block"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -right-10 bottom-12 hidden h-40 w-40 rounded-full bg-sky-100 opacity-60 lg:block"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute right-20 bottom-24 hidden h-5 w-5 rounded-full bg-sky-200 opacity-80 lg:block"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute right-28 bottom-32 hidden h-12 w-12 rounded-full border-8 border-white bg-sky-100 shadow-sm lg:block"
-          aria-hidden="true"
-        />
 
-        <div className="relative mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-            Most websites still handle maps and floor plans as flat images.
-          </h2>
-          <div className="mt-6 space-y-5 text-base leading-8 text-slate-700">
-            <p>
-              A static image can show a layout, but it cannot explain much.
-              Visitors cannot click a room, open a location page, view a
-              tooltip, check a section, or move from a visual plan to the next
-              step. That creates a problem for venues, schools, real estate
-              teams, event organizers, agencies, and businesses that need more
-              than a plain image but do not need a full GIS platform.
-            </p>
-            <p>
-              These jobs are not always a good fit for traditional map software.
-              A geographic map is useful when the user needs addresses,
-              directions, roads, and pins. But many website visuals are not
-              about roads or coordinates. They are about regions, sections,
-              rooms, labels, links, and explanations. A simple SVG or image can
-              often do the job better, but making that image interactive usually
-              requires custom code.
-            </p>
-            <p>
-              HTMLMaps is designed around that gap. The core idea is to make
-              clickable visual embeds easier for non-technical users while still
-              producing output that feels practical for agencies, developers,
-              and small businesses.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="tools" className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+      <section id="pain" className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 py-14">
           <div className="max-w-3xl">
             <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-              Planned HTMLMaps tools
+              The pain point is not making another pretty graphic.
             </h2>
             <p className="mt-4 text-base leading-8 text-slate-700">
-              The first version should focus on the highest-intent use cases:
-              interactive maps, clickable SVG maps, image hotspots, and floor
-              plan embeds. From there, the same editor model can support venue
-              maps, campus maps, sales territory maps, real estate site plans,
-              and product diagrams.
+              The real problem is that important business visuals often need to
+              guide action. A flat image can show information, but it usually
+              cannot help the visitor explore, compare, click through, or take
+              the next step.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {plannedTools.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
-              >
-                <h3 className="text-lg font-bold text-sky-700">{item.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-700">
-                  {item.text}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="use-cases" className="border-y border-slate-200 bg-slate-50">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-              Target use cases
-            </h2>
-            <p className="mt-4 text-base leading-8 text-slate-700">
-              HTMLMaps should not be limited to one type of map. The strongest
-              version supports a family of related visual tools: maps, plans,
-              layouts, diagrams, and hotspots. The connection between them is
-              simple: each one lets a website visitor click or tap part of a
-              visual and get more information.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {useCases.map((item) => (
+          <div className="mt-9 grid gap-5 md:grid-cols-3">
+            {painPoints.map((item) => (
               <article
                 key={item.title}
                 className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
@@ -558,22 +527,109 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="audience" className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+      <section id="use-cases" className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14">
           <div className="max-w-3xl">
             <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-              Who HTMLMaps is for
+              Use cases where the visual affects real business outcomes
             </h2>
             <p className="mt-4 text-base leading-8 text-slate-700">
-              The strongest users are people who need a visual layout on a real
-              website, not casual users looking for a one-off image. HTMLMaps is
-              aimed at practical website projects where clickable sections,
-              tooltips, and links make the visual more useful.
+              HTMLMaps is for visuals that support sales, leasing, bookings,
+              navigation, event operations, product education, or client
+              deliverables. It is not aimed at casual one-off graphics.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {audiences.map((item) => (
+          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {coreUseCases.map((item) => (
+              <article
+                key={item.title}
+                className="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
+              >
+                <h3 className="text-xl font-bold text-sky-700">{item.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-7 text-slate-700">
+                  {item.text}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {item.examples.map((example) => (
+                    <span
+                      key={example}
+                      className="rounded-full border border-sky-100 bg-white px-3 py-1 text-xs font-semibold text-sky-700"
+                    >
+                      {example}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="different" className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <div>
+              <p className="mb-4 inline-flex rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-700">
+                Why contact HTMLMaps if other tools exist?
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-sky-700">
+                Because the problem is the workflow, not just the graphic.
+              </h2>
+              <p className="mt-4 text-base leading-8 text-slate-700">
+                The market already has design platforms, hotspot widgets, map
+                tools, animation tools, and export tools. HTMLMaps is being
+                built for the gap between them: one business visual that can
+                work on your website and be reused across the rest of your sales
+                and marketing materials.
+              </p>
+              <div className="mt-6">
+                <Link
+                  href="#interest"
+                  className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-sky-800"
+                >
+                  Tell us if this solves your workflow
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              {differentiators.map((item) => (
+                <article
+                  key={item.title}
+                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                >
+                  <h3 className="text-lg font-bold text-sky-700">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-700">
+                    {item.text}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="outputs" className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-bold tracking-tight text-sky-700">
+              Use the same visual across your website and marketing.
+            </h2>
+            <p className="mt-4 text-base leading-8 text-slate-700">
+              A site plan, event map, floor plan, or product diagram should not
+              have to be rebuilt every time you need it somewhere else. HTMLMaps
+              is being built to help one source visual become an interactive
+              website embed and matching assets for sales, events, listings,
+              proposals, ads, social posts, and simple motion content.
+            </p>
+          </div>
+
+          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {outputCards.map((item) => (
               <article
                 key={item.title}
                 className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
@@ -588,82 +644,24 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="how-it-works"
-        className="border-y border-slate-200 bg-slate-50"
-      >
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-            How HTMLMaps works
-          </h2>
-          <div className="mt-8 grid gap-6 lg:grid-cols-4">
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <p className="text-sm font-bold text-sky-700">Step 1</p>
-              <h3 className="mt-2 text-xl font-bold text-sky-700">
-                Choose or upload
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Start from a built-in map template such as a US, Canada, or
-                world map, or upload a visual like a floor plan, venue layout,
-                site plan, diagram, or event map.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <p className="text-sm font-bold text-sky-700">Step 2</p>
-              <h3 className="mt-2 text-xl font-bold text-sky-700">
-                Add clickable areas
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Select regions, place hotspots, add labels, write tooltip text,
-                assign links, choose colors, and preview how the visual behaves
-                on desktop and mobile.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <p className="text-sm font-bold text-sky-700">Step 3</p>
-              <h3 className="mt-2 text-xl font-bold text-sky-700">
-                Publish the embed
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Generate a hosted iframe embed that can be copied into a
-                website. The embed is intended to stay isolated from the host
-                site so styling conflicts are minimized.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <p className="text-sm font-bold text-sky-700">Step 4</p>
-              <h3 className="mt-2 text-xl font-bold text-sky-700">
-                Edit later
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                A private edit link would let users return to the project
-                without needing an account in the first version. Paid unlocks
-                could remove branding permanently.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="difference" className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+      <section className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 py-14">
           <div className="max-w-3xl">
             <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-              How HTMLMaps is different
+              Best-fit users
             </h2>
             <p className="mt-4 text-base leading-8 text-slate-700">
-              HTMLMaps is not meant to replace full mapping software, route
-              planners, satellite maps, or advanced GIS tools. It is focused on
-              a simpler website problem: making visual layouts clickable,
-              informative, and easy to embed.
+              HTMLMaps is most likely to be useful when a visual directly
+              supports a decision, sale, booking, visit, proposal, event, or
+              client deliverable.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {differences.map((item) => (
+          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {audienceCards.map((item) => (
               <article
                 key={item.title}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
               >
                 <h3 className="text-lg font-bold text-sky-700">{item.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-slate-700">
@@ -675,143 +673,144 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="compatibility"
-        className="border-y border-slate-200 bg-slate-50"
-      >
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-            Built around simple website compatibility
-          </h2>
-          <div className="mt-6 space-y-5 text-base leading-8 text-slate-700">
-            <p>
-              The lowest-friction version of HTMLMaps should use hosted iframe
-              embeds. That approach avoids the need to build separate apps or
-              plugins for every website platform at the start. If a platform
-              allows custom HTML or iframe embeds, the same basic embed format
-              can usually work.
+      <section id="pricing" className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div className="max-w-3xl">
+            <p className="mb-4 inline-flex rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
+              Possible early access pricing
             </p>
-            <p>
-              HTMLMaps is designed to work with common website platforms through
-              standard embed code, including WordPress, Shopify, Squarespace,
-              Wix, Webflow, Weebly, Drupal, Joomla, static HTML, and custom
-              websites. A standard embed-first approach keeps the first version
-              focused while still making the output useful across many site
-              builders and CMS platforms.
-            </p>
-            <p>
-              A WordPress shortcode or block plugin could be added later as a
-              thin wrapper around the hosted embed. That would improve
-              discoverability for WordPress users without duplicating the entire
-              editor inside WordPress.
+            <h2 className="text-3xl font-bold tracking-tight text-sky-700">
+              Would this still be useful at these prices?
+            </h2>
+            <p className="mt-4 text-base leading-8 text-slate-700">
+              No payment is collected here. These numbers are included because
+              real interest only matters if the product would still be worth
+              paying for.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {platforms.map((platform) => (
-              <div
-                key={platform}
-                className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-center text-sm font-semibold text-slate-800 shadow-sm"
+          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {pricingSignals.map((item) => (
+              <article
+                key={item.name}
+                className="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
               >
-                {platform}
-              </div>
+                <h3 className="text-xl font-bold text-sky-700">{item.name}</h3>
+                <p className="mt-4 text-3xl font-bold tracking-tight text-slate-950">
+                  {item.price}
+                </p>
+                <p className="mt-4 flex-1 text-sm leading-7 text-slate-700">
+                  {item.text}
+                </p>
+              </article>
             ))}
           </div>
 
-          <p className="mt-6 text-sm leading-7 text-slate-500">
-            Platform names are trademarks of their respective owners.
-            Compatibility does not imply endorsement, partnership, or
-            affiliation.
-          </p>
-        </div>
-      </section>
-
-      <section id="validation" className="bg-white">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-            What this landing page is testing
-          </h2>
-          <div className="mt-6 space-y-5 text-base leading-8 text-slate-700">
-            <p>
-              This page is meant to test whether people understand and care
-              about the idea: clickable website-ready maps and visual layouts
-              without custom development work. The strongest signals would be
-              visitors spending time on the page, clicking use-case sections,
-              searching for specific tools, and returning for related pages such
-              as floor plan builders, image hotspot generators, or SVG map
-              tools.
-            </p>
-            <p>
-              If demand is real, the first build should stay narrow. A practical
-              MVP would include a few built-in map templates, an image hotspot
-              builder, hosted iframe publishing, private edit links, and a clear
-              free-to-paid model. The product does not need a huge asset library
-              at launch because users can upload their own visual layouts for
-              many use cases.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="beta" className="border-y border-slate-200 bg-slate-50">
-        <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-          <p className="mb-4 inline-flex rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
-            Early access validation
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight text-sky-700">
-            What should HTMLMaps build first?
-          </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-700">
-            The first version should focus on the use cases people actually
-            need. The strongest early demand will likely come from clickable
-            maps, image hotspots, floor plans, and website embeds, but the best
-            signal is which specific tool visitors ask for first.
-          </p>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm">
-              <h3 className="text-xl font-bold text-sky-700">Map templates</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Interactive US maps, Canada maps, world maps, clickable SVG
-                maps, and territory maps.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm">
-              <h3 className="text-xl font-bold text-sky-700">
-                Uploaded visuals
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Image hotspots for floor plans, venue layouts, real estate site
-                plans, event maps, and product diagrams.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm">
-              <h3 className="text-xl font-bold text-sky-700">Website embeds</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Hosted iframe embeds that work across common website builders,
-                CMS platforms, and custom HTML sites.
-              </p>
-            </div>
+          <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-900">
+            These are not final prices and this is not a checkout. Your response
+            helps decide whether HTMLMaps should launch, which users to serve
+            first, and what features matter enough to build.
           </div>
 
           <div className="mt-8">
             <Link
-              href="#top"
+              href="#interest"
               className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-sky-800"
             >
-              Review the concept again
+              I would consider using this
             </Link>
           </div>
         </div>
       </section>
 
-      <section id="faq" className="bg-white">
-        <div className="mx-auto max-w-5xl px-6 py-16">
+      <section className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-5xl px-6 py-14">
+          <h2 className="text-3xl font-bold tracking-tight text-sky-700">
+            Should you request early access?
+          </h2>
+          <p className="mt-4 text-base leading-8 text-slate-700">
+            You are a better fit if at least one of these is true:
+          </p>
+
+          <div className="mt-7 grid gap-4">
+            {fitQuestions.map((question) => (
+              <div
+                key={question}
+                className="rounded-2xl border border-slate-200 bg-white p-5 text-base font-medium leading-8 text-slate-800 shadow-sm"
+              >
+                {question}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <Link
+              href="#interest"
+              className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-sky-800"
+            >
+              Share your use case
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="interest" className="bg-white">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="mb-4 inline-flex rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
+              Request early access
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-sky-700">
+              Tell us what you actually need.
+            </h2>
+
+            <div className="mt-5 space-y-4 text-base leading-8 text-slate-700">
+              <p>
+                If this could solve a real problem for your business, leave your
+                email and a short explanation. Your response helps decide launch
+                timing, first features, pricing, and whether the first version
+                should focus on site plans, event maps, floor plans, diagrams,
+                exports, or another use case.
+              </p>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <h3 className="text-lg font-bold text-sky-700">
+                  Useful details to include
+                </h3>
+                <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                  <li>What type of business or organization you run.</li>
+                  <li>What kind of visual you need to make interactive.</li>
+                  <li>
+                    Where it would be used: website, proposal, ad, PDF, social,
+                    event guide, listing, or sales material.
+                  </li>
+                  <li>
+                    Which outputs matter most: embed, image, PDF, ad size,
+                    social size, animation, or workspace.
+                  </li>
+                  <li>What would make it worth paying for.</li>
+                </ul>
+              </div>
+
+              <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-900">
+                Do not include links. Do not try to upload files. This form only
+                accepts written details and an email address.
+              </p>
+            </div>
+          </div>
+
+          <InterestForm />
+        </div>
+      </section>
+
+      <section id="faq" className="border-t border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-5xl px-6 py-14">
           <h2 className="text-3xl font-bold tracking-tight text-sky-700">
             Frequently asked questions
           </h2>
-          <div className="mt-8 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-slate-50">
-            {faq.map((item) => (
+
+          <div className="mt-8 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
+            {faqs.map((item) => (
               <details key={item.question} className="group p-6">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-semibold text-sky-700">
                   {item.question}
@@ -829,23 +828,21 @@ export default function Home() {
       </section>
 
       <section className="bg-slate-950">
-        <div className="mx-auto max-w-5xl px-6 py-16 text-center">
+        <div className="mx-auto max-w-5xl px-6 py-14 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-sky-300">
-            A focused tool for clickable maps and visual embeds.
+            Have a visual that should do more than sit on a page?
           </h2>
           <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-300">
-            HTMLMaps is best positioned as a practical website utility: not a
-            general design platform, not a full GIS product, and not a generic
-            widget library. The clearest opportunity is helping people turn
-            maps, floor plans, site plans, venue layouts, seating charts,
-            diagrams, and images into clickable embeds.
+            If your site plan, event map, floor plan, diagram, or visual layout
+            could help customers decide, inquire, book, lease, attend, or
+            understand faster, HTMLMaps wants to hear what you need.
           </p>
           <div className="mt-8">
             <Link
-              href="#top"
+              href="#interest"
               className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-sky-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-sky-400"
             >
-              Back to top
+              Request early access
             </Link>
           </div>
         </div>
