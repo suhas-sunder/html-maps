@@ -1,6 +1,5 @@
 "use client";
 
-import Script from "next/script";
 import { FormEvent, useRef, useState } from "react";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
@@ -37,6 +36,7 @@ const outputOptions = [
   { value: "ad-banners", label: "Ad banner sizes" },
   { value: "video-gif", label: "MP4/GIF/WebM animation export" },
   { value: "client-review", label: "Client review/workspace features" },
+  { value: "other", label: "Other" },
 ];
 
 const priceOptions = [
@@ -60,18 +60,49 @@ const timingOptions = [
   { value: "researching", label: "I am only researching right now" },
 ];
 
-function containsBlockedLink(value: string) {
-  const linkPattern =
-    /(?:https?:\/\/|www\.|ftp:\/\/|mailto:|data:|javascript:|file:\/\/|\/\/[a-z0-9]|[a-z0-9][a-z0-9-]{1,62}\.(?:com|net|org|io|co|ca|us|uk|edu|gov|biz|info|app|dev|ai|xyz|site|online|shop|store|link|me|ly|gg|tv|to|ru|cn|in)\b)/i;
-
-  return linkPattern.test(value);
-}
-
 function getCheckedValues(formData: FormData, name: string) {
   return formData
     .getAll(name)
     .filter((value): value is string => typeof value === "string")
     .join(", ");
+}
+
+function normalizeText(value: FormDataEntryValue | null) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim();
+}
+
+function sanitizeForPlainTextEmail(value: string) {
+  return value
+    .replace(/[<>]/g, "")
+    .replace(/https:\/\//gi, "hxxps://")
+    .replace(/http:\/\//gi, "hxxp://")
+    .replace(/ftp:\/\//gi, "fxp://")
+    .replace(/mailto:/gi, "mail to:")
+    .replace(/javascript:/gi, "javascript blocked:")
+    .replace(/data:/gi, "data blocked:")
+    .replace(/file:\/\//gi, "file blocked://")
+    .replace(/\bwww\./gi, "www[dot]")
+    .replace(
+      /\b([a-z0-9._%+-]+)@([a-z0-9.-]+)\.([a-z]{2,})\b/gi,
+      "$1 [at] $2 [dot] $3",
+    )
+    .replace(
+      /\b([a-z0-9][a-z0-9-]{1,62})\.(com|net|org|io|co|ca|us|uk|edu|gov|biz|info|app|dev|ai|xyz|site|online|shop|store|link|me|ly|gg|tv|to|ru|cn|in)\b/gi,
+      "$1[dot]$2",
+    )
+    .slice(0, 1200);
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
 export default function InterestForm() {
@@ -88,10 +119,20 @@ export default function InterestForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setSubmitState("submitting");
+    const form = event.currentTarget;
+
+    setSubmitState("idle");
     setMessage("");
 
-    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      setSubmitState("error");
+      setMessage("Please complete all required fields before submitting.");
+      return;
+    }
+
+    setSubmitState("submitting");
+
     const formData = new FormData(form);
 
     const elapsedMs = Date.now() - startedAtRef.current;
@@ -102,17 +143,56 @@ export default function InterestForm() {
       return;
     }
 
-    const website = String(formData.get("website") || "").trim();
+    const botcheck = normalizeText(formData.get("botcheck"));
 
-    if (website) {
+    if (botcheck) {
       setSubmitState("error");
       setMessage("The submission could not be accepted.");
       return;
     }
 
-    const useCaseDetails = String(formData.get("useCaseDetails") || "").trim();
-    const feedback = String(formData.get("feedback") || "").trim();
-    const businessName = String(formData.get("businessName") || "").trim();
+    const email = normalizeText(formData.get("email")).toLowerCase();
+    const businessName = normalizeText(formData.get("businessName"));
+    const businessType = normalizeText(formData.get("businessType"));
+    const primaryUseCase = normalizeText(formData.get("primaryUseCase"));
+    const timing = normalizeText(formData.get("timing"));
+    const priceInterest = normalizeText(formData.get("priceInterest"));
+    const useCaseDetails = normalizeText(formData.get("useCaseDetails"));
+    const feedback = normalizeText(formData.get("feedback"));
+    const otherOutputDetails = normalizeText(
+      formData.get("otherOutputDetails"),
+    );
+    const consent = normalizeText(formData.get("consent"));
+
+    if (!email || !isValidEmail(email)) {
+      setSubmitState("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    if (!businessType) {
+      setSubmitState("error");
+      setMessage("Please select your business type.");
+      return;
+    }
+
+    if (!primaryUseCase) {
+      setSubmitState("error");
+      setMessage("Please select what you would use HTMLMaps for.");
+      return;
+    }
+
+    if (!timing) {
+      setSubmitState("error");
+      setMessage("Please select how soon you would need this.");
+      return;
+    }
+
+    if (!priceInterest) {
+      setSubmitState("error");
+      setMessage("Please select where you stand after seeing the pricing.");
+      return;
+    }
 
     if (useCaseDetails.length < 20) {
       setSubmitState("error");
@@ -120,53 +200,69 @@ export default function InterestForm() {
       return;
     }
 
-    if (
-      containsBlockedLink(useCaseDetails) ||
-      containsBlockedLink(feedback) ||
-      containsBlockedLink(businessName)
-    ) {
+    if (consent !== "Yes") {
       setSubmitState("error");
       setMessage(
-        "Links are not allowed. Please remove URLs, website addresses, or link-like text.",
+        "Please confirm that you understand this is an early access interest form.",
       );
       return;
     }
 
+    const outputsSelected = getCheckedValues(formData, "outputs");
+
+    const safeBusinessName = sanitizeForPlainTextEmail(businessName);
+    const safeBusinessType = sanitizeForPlainTextEmail(businessType);
+    const safePrimaryUseCase = sanitizeForPlainTextEmail(primaryUseCase);
+    const safeTiming = sanitizeForPlainTextEmail(timing);
+    const safePriceInterest = sanitizeForPlainTextEmail(priceInterest);
+    const safeOutputsSelected = sanitizeForPlainTextEmail(outputsSelected);
+    const safeUseCaseDetails = sanitizeForPlainTextEmail(useCaseDetails);
+    const safeFeedback = sanitizeForPlainTextEmail(feedback);
+    const safeOtherOutputDetails =
+      sanitizeForPlainTextEmail(otherOutputDetails);
+
     formData.set("access_key", WEB3FORMS_ACCESS_KEY);
     formData.set("subject", "HTMLMaps interest validation");
     formData.set("from_name", "HTMLMaps Landing Page");
-    formData.set("redirect", "false");
-
-    formData.set("outputs_selected", getCheckedValues(formData, "outputs"));
-    formData.delete("outputs");
 
     formData.set(
       "message",
       [
         "HTMLMaps validation lead",
         "",
-        `Email: ${String(formData.get("email") || "").trim()}`,
-        `Business / organization: ${businessName || "Not provided"}`,
-        `Business type: ${String(formData.get("businessType") || "").trim()}`,
-        `Primary use case: ${String(formData.get("primaryUseCase") || "").trim()}`,
-        `Timing: ${String(formData.get("timing") || "").trim()}`,
-        `Price interest: ${String(formData.get("priceInterest") || "").trim()}`,
-        `Requested outputs: ${String(
-          formData.get("outputs_selected") || "None selected",
-        ).trim()}`,
+        `Reply-to email: ${email}`,
+        `Business / organization: ${safeBusinessName || "Not provided"}`,
+        `Business type: ${safeBusinessType}`,
+        `Primary use case: ${safePrimaryUseCase}`,
+        `Timing: ${safeTiming}`,
+        `Price interest: ${safePriceInterest}`,
+        `Requested outputs: ${safeOutputsSelected || "None selected"}`,
+        `Other output details: ${safeOtherOutputDetails || "Not provided"}`,
         "",
         "Use case details:",
-        useCaseDetails,
+        safeUseCaseDetails,
         "",
         "Feedback / must-have features:",
-        feedback || "Not provided.",
+        safeFeedback || "Not provided.",
         "",
         "Security notes:",
         "No file uploads were accepted.",
-        "Client-side link blocking was enabled.",
+        "User-provided text was sanitized before being placed in this email.",
+        "URL-like and email-like text was neutralized to reduce clickable links.",
         "This submission came from the HTMLMaps landing page.",
       ].join("\n"),
     );
+
+    formData.delete("outputs");
+    formData.delete("businessName");
+    formData.delete("businessType");
+    formData.delete("primaryUseCase");
+    formData.delete("timing");
+    formData.delete("priceInterest");
+    formData.delete("useCaseDetails");
+    formData.delete("feedback");
+    formData.delete("otherOutputDetails");
+    formData.delete("consent");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -192,7 +288,7 @@ export default function InterestForm() {
       startedAtRef.current = 0;
       setSubmitState("success");
       setMessage(
-        "Thanks. Your interest was recorded and sent to HTMLMaps. This helps decide what should launch first.",
+        "Thanks. Your interest was sent to HTMLMaps. Check your inbox or spam folder if you submitted a test using your own email.",
       );
     } catch {
       setSubmitState("error");
@@ -201,288 +297,289 @@ export default function InterestForm() {
   }
 
   return (
-    <>
-      <Script
-        src="https://web3forms.com/client/script.js"
-        strategy="afterInteractive"
+    <form
+      onSubmit={handleSubmit}
+      onFocusCapture={markFormStarted}
+      onPointerEnter={markFormStarted}
+      className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
+    >
+      <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+      <input
+        type="hidden"
+        name="subject"
+        value="HTMLMaps interest validation"
+      />
+      <input type="hidden" name="from_name" value="HTMLMaps Landing Page" />
+
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        style={{ display: "none" }}
       />
 
-      <form
-        onSubmit={handleSubmit}
-        onFocusCapture={markFormStarted}
-        onPointerEnter={markFormStarted}
-        className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
-        noValidate
-      >
-        <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
-        <input
-          type="hidden"
-          name="subject"
-          value="HTMLMaps interest validation"
-        />
-        <input type="hidden" name="from_name" value="HTMLMaps Landing Page" />
-        <input type="hidden" name="redirect" value="false" />
-
-        <div
-          className="absolute left-[-5000px] top-auto h-px w-px overflow-hidden"
-          aria-hidden="true"
-        >
-          <label htmlFor="website">Website</label>
+      <div className="grid gap-5 md:grid-cols-2">
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-2 block text-sm font-semibold text-slate-900"
+          >
+            Email address
+          </label>
           <input
-            id="website"
-            name="website"
+            id="email"
+            name="email"
+            type="email"
+            required
+            maxLength={254}
+            autoComplete="email"
+            placeholder="you@example.com"
+            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="businessName"
+            className="mb-2 block text-sm font-semibold text-slate-900"
+          >
+            Business or organization name
+          </label>
+          <input
+            id="businessName"
+            name="businessName"
             type="text"
-            tabIndex={-1}
-            autoComplete="off"
+            maxLength={80}
+            autoComplete="organization"
+            placeholder="Optional"
+            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
           />
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-semibold text-slate-900"
-            >
-              Email address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              maxLength={254}
-              autoComplete="email"
-              placeholder="you@example.com"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="businessName"
-              className="mb-2 block text-sm font-semibold text-slate-900"
-            >
-              Business or organization name
-            </label>
-            <input
-              id="businessName"
-              name="businessName"
-              type="text"
-              maxLength={80}
-              autoComplete="organization"
-              placeholder="Optional"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="businessType"
-              className="mb-2 block text-sm font-semibold text-slate-900"
-            >
-              What type of business are you?
-            </label>
-            <select
-              id="businessType"
-              name="businessType"
-              required
-              defaultValue=""
-              className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-            >
-              <option value="" disabled>
-                Select one
+        <div>
+          <label
+            htmlFor="businessType"
+            className="mb-2 block text-sm font-semibold text-slate-900"
+          >
+            What type of business are you?
+          </label>
+          <select
+            id="businessType"
+            name="businessType"
+            required
+            defaultValue=""
+            className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+          >
+            <option value="" disabled>
+              Select one
+            </option>
+            {businessTypes.map((item) => (
+              <option key={item.value} value={item.label}>
+                {item.label}
               </option>
-              {businessTypes.map((item) => (
-                <option key={item.value} value={item.label}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="primaryUseCase"
-              className="mb-2 block text-sm font-semibold text-slate-900"
-            >
-              What would you use HTMLMaps for?
-            </label>
-            <select
-              id="primaryUseCase"
-              name="primaryUseCase"
-              required
-              defaultValue=""
-              className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-            >
-              <option value="" disabled>
-                Select one
-              </option>
-              {useCases.map((item) => (
-                <option key={item.value} value={item.label}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="timing"
-              className="mb-2 block text-sm font-semibold text-slate-900"
-            >
-              How soon would you need this?
-            </label>
-            <select
-              id="timing"
-              name="timing"
-              required
-              defaultValue=""
-              className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-            >
-              <option value="" disabled>
-                Select one
-              </option>
-              {timingOptions.map((item) => (
-                <option key={item.value} value={item.label}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="priceInterest"
-              className="mb-2 block text-sm font-semibold text-slate-900"
-            >
-              After seeing the pricing, where do you stand?
-            </label>
-            <select
-              id="priceInterest"
-              name="priceInterest"
-              required
-              defaultValue=""
-              className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-            >
-              <option value="" disabled>
-                Select one
-              </option>
-              {priceOptions.map((item) => (
-                <option key={item.value} value={item.label}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <fieldset className="mt-6">
-          <legend className="mb-3 text-sm font-semibold text-slate-900">
-            Which outputs would matter to you?
-          </legend>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            {outputOptions.map((item) => (
-              <label
-                key={item.value}
-                className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700 transition hover:border-sky-300 hover:bg-sky-50"
-              >
-                <input
-                  type="checkbox"
-                  name="outputs"
-                  value={item.label}
-                  className="mt-1 h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-700 focus:ring-sky-500"
-                />
-                <span>{item.label}</span>
-              </label>
             ))}
-          </div>
-        </fieldset>
-
-        <div className="mt-6">
-          <label
-            htmlFor="useCaseDetails"
-            className="mb-2 block text-sm font-semibold text-slate-900"
-          >
-            Describe what you need
-          </label>
-          <textarea
-            id="useCaseDetails"
-            name="useCaseDetails"
-            required
-            minLength={20}
-            maxLength={900}
-            rows={5}
-            placeholder="Example: I run an event venue and need a clickable room layout for our website, plus PDF and social exports for client proposals. Do not include links."
-            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-          />
-          <p className="mt-2 text-xs leading-6 text-slate-500">
-            Do not include links. This form blocks links in free-text fields.
-          </p>
+          </select>
         </div>
 
-        <div className="mt-6">
+        <div>
           <label
-            htmlFor="feedback"
+            htmlFor="primaryUseCase"
             className="mb-2 block text-sm font-semibold text-slate-900"
           >
-            Feedback, concerns, or must-have features
+            What would you use HTMLMaps for?
           </label>
-          <textarea
-            id="feedback"
-            name="feedback"
-            maxLength={900}
-            rows={4}
-            placeholder="What would make this worth paying for? What would stop you from using it? Do not include links."
-            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
-          />
+          <select
+            id="primaryUseCase"
+            name="primaryUseCase"
+            required
+            defaultValue=""
+            className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+          >
+            <option value="" disabled>
+              Select one
+            </option>
+            {useCases.map((item) => (
+              <option key={item.value} value={item.label}>
+                {item.label}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 transition hover:border-sky-300 hover:bg-sky-50">
-          <input
-            type="checkbox"
-            name="consent"
-            value="Yes"
+        <div>
+          <label
+            htmlFor="timing"
+            className="mb-2 block text-sm font-semibold text-slate-900"
+          >
+            How soon would you need this?
+          </label>
+          <select
+            id="timing"
+            name="timing"
             required
-            className="mt-1 h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-700 focus:ring-sky-500"
-          />
-          <span>
-            I understand HTMLMaps is currently validating interest and that my
-            submission may be used to decide launch timing, implementation
-            scope, and which use cases are built first.
-          </span>
-        </label>
+            defaultValue=""
+            className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+          >
+            <option value="" disabled>
+              Select one
+            </option>
+            {timingOptions.map((item) => (
+              <option key={item.value} value={item.label}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <div className="h-captcha mt-6" data-captcha="true" />
+        <div>
+          <label
+            htmlFor="priceInterest"
+            className="mb-2 block text-sm font-semibold text-slate-900"
+          >
+            After seeing the pricing, where do you stand?
+          </label>
+          <select
+            id="priceInterest"
+            name="priceInterest"
+            required
+            defaultValue=""
+            className="w-full cursor-pointer rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+          >
+            <option value="" disabled>
+              Select one
+            </option>
+            {priceOptions.map((item) => (
+              <option key={item.value} value={item.label}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-        <button
-          type="submit"
-          disabled={submitState === "submitting"}
-          className="mt-6 w-full cursor-pointer rounded-xl bg-sky-700 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+      <fieldset className="mt-6">
+        <legend className="mb-3 text-sm font-semibold text-slate-900">
+          Which outputs would matter to you?
+        </legend>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          {outputOptions.map((item) => (
+            <label
+              key={item.value}
+              className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700 transition hover:border-sky-300 hover:bg-sky-50"
+            >
+              <input
+                type="checkbox"
+                name="outputs"
+                value={item.label}
+                className="mt-1 h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-700 focus:ring-sky-500"
+              />
+              <span>{item.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="mt-6">
+        <label
+          htmlFor="otherOutputDetails"
+          className="mb-2 block text-sm font-semibold text-slate-900"
         >
-          {submitState === "submitting"
-            ? "Submitting..."
-            : "Send interest to HTMLMaps"}
-        </button>
+          Other output details
+        </label>
+        <input
+          id="otherOutputDetails"
+          name="otherOutputDetails"
+          type="text"
+          maxLength={180}
+          placeholder="Optional. Example: printable signage, kiosk display, investor deck, custom format..."
+          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+        />
+      </div>
 
-        {message && (
-          <div
-            className={`mt-4 rounded-xl border p-4 text-sm leading-7 ${
-              submitState === "success"
-                ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                : "border-red-200 bg-red-50 text-red-900"
-            }`}
-            role="status"
-          >
-            {message}
-          </div>
-        )}
-
-        <p className="mt-4 text-xs leading-6 text-slate-500">
-          This form does not accept uploads, links, payment details, or website
-          URLs. Submissions are sent through Web3Forms.
+      <div className="mt-6">
+        <label
+          htmlFor="useCaseDetails"
+          className="mb-2 block text-sm font-semibold text-slate-900"
+        >
+          Describe what you need
+        </label>
+        <textarea
+          id="useCaseDetails"
+          name="useCaseDetails"
+          required
+          minLength={20}
+          maxLength={900}
+          rows={5}
+          placeholder="Example: I run an event venue and need a clickable room layout for our website, plus PDF and social exports for client proposals."
+          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+        />
+        <p className="mt-2 text-xs leading-6 text-slate-500">
+          URL-like and email-like text is neutralized before the email is sent.
         </p>
-      </form>
-    </>
+      </div>
+
+      <div className="mt-6">
+        <label
+          htmlFor="feedback"
+          className="mb-2 block text-sm font-semibold text-slate-900"
+        >
+          Feedback, concerns, or must-have features
+        </label>
+        <textarea
+          id="feedback"
+          name="feedback"
+          maxLength={900}
+          rows={4}
+          placeholder="What would make this worth paying for? What would stop you from using it?"
+          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+        />
+      </div>
+
+      <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700 transition hover:border-sky-300 hover:bg-sky-50">
+        <input
+          type="checkbox"
+          name="consent"
+          value="Yes"
+          required
+          className="mt-1 h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-700 focus:ring-sky-500"
+        />
+        <span>
+          I understand HTMLMaps is currently validating interest and that my
+          submission may be used to decide launch timing, implementation scope,
+          and which use cases are built first.
+        </span>
+      </label>
+
+      <button
+        type="submit"
+        disabled={submitState === "submitting"}
+        className="mt-6 w-full cursor-pointer rounded-xl bg-sky-700 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+      >
+        {submitState === "submitting"
+          ? "Submitting..."
+          : "Send interest to HTMLMaps"}
+      </button>
+
+      {message && (
+        <div
+          className={`mt-4 rounded-xl border p-4 text-sm leading-7 ${
+            submitState === "success"
+              ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+              : "border-red-200 bg-red-50 text-red-900"
+          }`}
+          role="status"
+        >
+          {message}
+        </div>
+      )}
+
+      <p className="mt-4 text-xs leading-6 text-slate-500">
+        This form does not accept uploads, payment details, or attachments.
+        Submissions are sent through Web3Forms.
+      </p>
+    </form>
   );
 }
